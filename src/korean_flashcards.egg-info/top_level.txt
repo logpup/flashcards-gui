@@ -1,0 +1,8 @@
+__init__
+application
+cross_cutting
+domain
+infrastructure
+main
+plugins
+presentation
