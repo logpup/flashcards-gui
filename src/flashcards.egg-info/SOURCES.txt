@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+src/application/__init__.py
+src/domain/__init__.py
+src/domain/enums/card_type.py
+src/domain/models/card.py
+src/domain/models/deck.py
+src/flashcards.egg-info/PKG-INFO
+src/flashcards.egg-info/SOURCES.txt
+src/flashcards.egg-info/dependency_links.txt
+src/flashcards.egg-info/top_level.txt
+src/infrastructure/persistence/local/connection.py
