@@ -10,7 +10,7 @@ DATABASE_URL = "sqlite:///test_local.db"
 engine = create_engine(DATABASE_URL, echo=True) # echo=True logs SQL queries
 
 # Create a SessionLocal class for database sessions
-SessionLocal = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 # Base class for model definitions
 Base = declarative_base()
