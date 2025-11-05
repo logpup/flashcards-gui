@@ -52,8 +52,11 @@ def sample_cards():
 
 @pytest.fixture
 def sample_deck(sample_cards):
-    """Create a sample deck with cards for testing."""
-    return Deck.create(name="Python Basics", cards=sample_cards)
+    # 1. Convert the list of Card model instances to a list of dictionaries
+    card_data = [card.model_dump() for card in sample_cards]
+    
+    # 2. Pass the list of dictionaries to the constructor
+    return Deck.create(name="Python Basics", cards=card_data)
 
 
 @pytest.fixture
