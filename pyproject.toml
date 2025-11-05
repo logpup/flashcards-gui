@@ -40,6 +40,7 @@ import_heading_firstparty = "Local application imports"
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
+pythonpath = ["."]
 
 # Test paths
 testpaths = ["tests"]
