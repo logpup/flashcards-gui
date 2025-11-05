@@ -1,0 +1,14 @@
+{
+    "[python]": {
+        "editor.rulers": [
+            {
+                "column": 79,
+                "color": "#80808033"
+            },
+            {
+                "column": 72,
+                "color": "#8080801A"
+            }
+    ]
+    }
+}
