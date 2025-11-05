@@ -35,3 +35,44 @@ import_heading_stdlib = "Standard library imports"
 import_heading_thirdparty = "Third party imports"
 import_heading_firstparty = "Local application imports"
 
+[tool.pytest.ini_options]
+# Test discovery patterns
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+
+# Test paths
+testpaths = ["tests"]
+
+# Output options (Each item in addopts is a string in an array)
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--disable-warnings",
+    "--color=yes",
+    "--cov=src",
+    "--cov-report=html",
+    "--cov-report=term-missing",
+]
+
+# Markers (Each marker is a string in an array)
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+    "database: Tests that require database",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true # TOML uses 'true'/'false', not 'True'/'False'
+skip_covered = false
