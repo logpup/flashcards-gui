@@ -40,11 +40,11 @@ class SqlAlchemyDeckRepository:
                     Card(id=c.id, front=c.front, back=c.back)
                     for c in orm_deck.cards
                 ]
-                return Deck(
-                    id=orm_deck.id,
-                    name=orm_deck.name,
-                    cards=cards,
-                )
+                return Deck.model_validate({
+                    "id": orm_deck.id,
+                    "name": orm_deck.name,
+                    "cards": [c.model_dump() for c in cards],
+                })
             return None
     
     def list_all(self) -> list[Deck]:
@@ -53,11 +53,14 @@ class SqlAlchemyDeckRepository:
             orm_decks = session.query(DeckORM).all()
             decks = []
             for d in orm_decks:
-                cards = [
-                    Card(id=c.id, front=c.front, back=c.back)
-                    for c in d.cards
-                ]
-                decks.append(Deck(id=d.id, name=d.name, cards=cards))
+                cards = [Card(id=c.id, front=c.front, back=c.back) for c in d.cards]
+                decks.append(
+                    Deck.model_validate({
+                        "id": d.id,
+                        "name": d.name,
+                        "cards": [c.model_dump() for c in cards],
+                    })
+                )
             return decks
     
     def update(self, deck: Deck) -> Deck | None:
