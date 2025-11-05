@@ -11,27 +11,6 @@ from src.domain.models.card import Card
 from src.infrastructure.persistence.local.connection import Base
 from src.infrastructure.persistence.local.schemas.card_schema import CardORM
 from src.infrastructure.persistence.local.repositories.card_repository import SqlAlchemyCardRepository
-
-
-@pytest.fixture(scope="function")
-def test_engine():
-    """Create an in-memory SQLite database for testing."""
-    engine = create_engine("sqlite:///:memory:", echo=False)
-    Base.metadata.create_all(bind=engine)
-    yield engine
-    Base.metadata.drop_all(bind=engine)
-
-
-@pytest.fixture(scope="function")
-def test_session(test_engine, monkeypatch):
-    """Create a test session and monkey-patch the SessionLocal."""
-    TestSessionLocal = sessionmaker(bind=test_engine, autocommit=False, autoflush=False)
-    
-    # Monkey-patch the SessionLocal in connection module
-    import src.infrastructure.persistence.local.connection as conn
-    monkeypatch.setattr(conn, "SessionLocal", TestSessionLocal)
-    
-    yield TestSessionLocal
     
 
 @pytest.fixture
