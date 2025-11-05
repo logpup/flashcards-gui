@@ -1,11 +1,10 @@
-"""
-Shared pytest fixtures for all tests.
-Place this file in the tests/ directory.
-"""
+# Third party imports
 
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+# Local application imports
 
 from src.infrastructure.persistence.local.connection import Base
 
