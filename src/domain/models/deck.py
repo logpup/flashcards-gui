@@ -6,7 +6,7 @@ from uuid import UUID, uuid4
 from pydantic import BaseModel, Field
 
 # Local application imports
-from domain.models.card import Card
+from src.domain.models.card import Card
 
 
 class Deck(BaseModel):
