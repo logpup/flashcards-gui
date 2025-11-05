@@ -7,6 +7,7 @@ env/
 # Ignore Python cache/bytecode files
 __pycache__/
 *.pyc
+.coverage
 
 # Ignore build artifacts
 dist/
