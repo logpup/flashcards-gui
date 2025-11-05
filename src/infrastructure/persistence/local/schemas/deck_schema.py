@@ -17,7 +17,7 @@ class DeckORM(Base):
     name = Column(String, nullable=False)
 
     # Relationship to cards
-    card = relationship("CardORM", back_populates="deck", cascade="all, delete-orphan")
+    cards = relationship("CardORM", back_populates="deck", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<DeckORM(id={self.id}, name={self.name!r})>"
