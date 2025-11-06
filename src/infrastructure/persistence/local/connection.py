@@ -1,3 +1,7 @@
+# Standard library imports
+
+from typing import Generator
+
 # Third-party imports
 from contextlib import contextmanager
 from sqlalchemy import create_engine
@@ -16,7 +20,7 @@ SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
 
 @contextmanager
-def get_session() -> Session:
+def get_session() -> Generator[Session, None, None]:
     """Context manager for database sessions with automatic commit/rollback."""
     session = SessionLocal()
     try:
