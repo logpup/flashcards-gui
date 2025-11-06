@@ -1,12 +1,23 @@
+# Standard library imports
+
+import gc
+import warnings
+import platform
+
 # Third party imports
 
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, close_all_sessions
 
 # Local application imports
 
 from src.infrastructure.persistence.local.connection import Base
+
+
+# Silence ResourceWarning only on Windows
+if platform.system() == "Windows":
+    warnings.filterwarnings("ignore", category=ResourceWarning)
 
 
 @pytest.fixture(scope="function")
@@ -15,11 +26,23 @@ def test_engine():
     Create an in-memory SQLite database for testing.
     Each test gets a fresh database.
     """
-    engine = create_engine("sqlite:///:memory:", echo=False)
+    engine = create_engine(
+        "sqlite://",
+        connect_args={"check_same_thread": False},
+        pool_pre_ping=True,
+        echo=False,
+    )
+
     Base.metadata.create_all(bind=engine)
-    yield engine
-    Base.metadata.drop_all(bind=engine)
-    engine.dispose()
+
+    try:
+        yield engine
+    finally:
+        # Drop tables and fully close out the engine
+        close_all_sessions()
+        Base.metadata.drop_all(bind=engine)
+        engine.dispose(close=True)
+        gc.collect()
 
 
 @pytest.fixture(scope="function")
@@ -38,10 +61,14 @@ def test_session(test_engine, monkeypatch):
     import src.infrastructure.persistence.local.connection as conn
     monkeypatch.setattr(conn, "SessionLocal", TestSessionLocal)
     
-    yield TestSessionLocal
-    
-    # Cleanup
-    TestSessionLocal.close_all()
+    try:
+        yield TestSessionLocal
+    finally:
+         # Drop tables and fully close out the engine
+        close_all_sessions()
+        TestSessionLocal.close_all()
+        test_engine.dispose(close=True)
+        gc.collect()
 
 
 @pytest.fixture(scope="session")
